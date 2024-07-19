@@ -1,0 +1,18 @@
+{% extends 'default.html.twig' %}
+
+{% block main %}
+    <div class="bg-body-tertiary p-5 rounded">
+        <form method="post" action="/posts">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input value="Title test title test" class="form-control" name="title" type="text" id="title" aria-describedby="titleHelp" required>
+                <div id="titleHelp" class="form-text">Add title post</div>
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Content</label>
+                <textarea name="body" id="body" cols="30" rows="10" class="form-control" required>Body test message from controller and why you did not like boss not Body test message from controller and why you did not like boss not Body test message from controller and why you did not like boss not</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" >Add</button>
+        </form>
+    </div>
+{% endblock %}
