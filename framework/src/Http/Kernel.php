@@ -5,6 +5,7 @@ namespace Web\Framework\Http;
 use Doctrine\DBAL\Connection;
 use League\Container\Container;
 use Web\Framework\Http\Exceptions\HttpException;
+use Web\Framework\Http\Middleware\RequestHandlerInterface;
 use Web\Framework\Routing\RouterInterface;
 
 class Kernel
@@ -15,6 +16,7 @@ class Kernel
     public function __construct(
         private RouterInterface $router,
         private Container $container,
+        private RequestHandlerInterface $requestHandler,
     )
     {
         $this->appEnv = $this->container->get('APP_ENV');
@@ -22,13 +24,17 @@ class Kernel
     public function handle(Request $request): Response
     {
         try {
-            [$routeHandler, $vars] = $this->router->dispatch($request, $this->container);
-            $responce = call_user_func_array($routeHandler, $vars);
+            $responce = $this->requestHandler->handle($request);
+
         } catch (\Exception $e){
             $responce = $this->createExceptionResponce($e);
         }
 
         return $responce;
+    }
+    public function terminate(Request $request, Response $response): void
+    {
+        $request->getSession()?->clearFlash();
     }
 
     private function createExceptionResponce(\Exception $e): Response
@@ -43,4 +49,6 @@ class Kernel
 
         return new Response('Server error', 500);
     }
+
+
 }

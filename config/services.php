@@ -10,12 +10,18 @@ use Web\Framework\Console\Commands\MigrateCommand;
 use Web\Framework\Controller\AbstractController;
 use Web\Framework\Dbal\ConnectionFactory;
 use Web\Framework\Http\Kernel;
+use Web\Framework\Http\Middleware\RequestHandler;
+use Web\Framework\Http\Middleware\RequestHandlerInterface;
+use Web\Framework\Http\Middleware\RouterDispatch;
 use Web\Framework\Routing\RouterInterface;
 use Web\Framework\Routing\Router;
 use \League\Container\Argument\Literal\ArrayArgument;
 use \League\Container\ReflectionContainer;
 use \League\Container\Argument\Literal\StringArgument;
 use \Web\Framework\Console\Kernel as ConsoleKernel;
+use Web\Framework\Session\Session;
+use Web\Framework\Session\SessionInterface;
+use Web\Framework\Template\TwigFactory;
 
 
 // Application parameters
@@ -41,15 +47,30 @@ $container->add(RouterInterface::class, Router::class);
 $container->extend(RouterInterface::class)
     ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 
-$container->add(Kernel::class)
-    ->addArgument(RouterInterface::class)
+$container->add(RequestHandlerInterface::class, RequestHandler::class)
     ->addArgument($container);
 
-$container->addShared('twig-loader', FilesystemLoader::class)
-    ->addArgument(new StringArgument($viewsPath));
+$container->add(Kernel::class)
+    ->addArguments([
+        RouterInterface::class,
+        $container,
+        RequestHandlerInterface::class
+    ]);
 
-$container->addShared('twig',Environment::class)
-    ->addArgument('twig-loader');
+//$container->addShared('twig-loader', FilesystemLoader::class)
+//    ->addArgument(new StringArgument($viewsPath));
+//
+//$container->addShared('twig',Environment::class)
+//    ->addArgument('twig-loader');
+
+$container->addShared(SessionInterface::class, Session::class);
+
+$container->add('twig-factory', TwigFactory::class)
+    ->addArguments([new StringArgument($viewsPath), SessionInterface::class]);
+
+$container->addShared('twig', function () use ($container) {
+    return $container->get('twig-factory')->create();
+});
 
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
@@ -71,5 +92,11 @@ $container->add(ConsoleKernel::class)
 $container->add('console:migrate', MigrateCommand::class)
     ->addArgument(Connection::class)
     ->addArgument(new StringArgument(BASE_PATH .'/database/migrations'));
+
+$container->add(RouterDispatch::class)
+    ->addArguments([
+        RouterInterface::class,
+        $container
+    ]);
 
 return $container;

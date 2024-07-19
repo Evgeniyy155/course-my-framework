@@ -5,12 +5,16 @@ namespace App\Controllers;
 use App\Entities\Post;
 use App\Services\PostService;
 use Web\Framework\Controller\AbstractController;
+use Web\Framework\Http\RedirectResponce;
 use Web\Framework\Http\Response;
+use Web\Framework\Session\SessionInterface;
 
 class PostController extends AbstractController
 {
 
-    public function __construct(private PostService $service)
+    public function __construct(
+        private PostService $service,
+    )
     {
     }
     public function show(int $id): Response
@@ -26,7 +30,7 @@ class PostController extends AbstractController
         return $this->render('create_post.html.twig');
     }
 
-    public function store()
+    public function store(): Response
     {
         $post = Post::create(
             $this->request->postData['title'],
@@ -34,7 +38,7 @@ class PostController extends AbstractController
         );
 
         $post = $this->service->save($post);
-
-        dd($post);
+        $this->request->getSession()->setFlash('success', 'Пост був успішно створений!');
+        return new RedirectResponce("/posts/{$post->getId()}");
     }
 }
