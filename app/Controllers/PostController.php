@@ -33,8 +33,8 @@ class PostController extends AbstractController
     public function store(): Response
     {
         $post = Post::create(
-            $this->request->postData['title'],
-            $this->request->postData['body'],
+            $this->request->input('title'),
+            $this->request->input('body'),
         );
 
         $post = $this->service->save($post);

@@ -1,0 +1,39 @@
+{% extends 'default.html.twig' %}
+
+{% block main %}
+    <div class="bg-body-tertiary p-5 rounded">
+        {% if(session().hasFlash('error')) %}
+        <div class="alert alert-danger">
+            <ul class="m-0">
+                {% for error in session().getFlash('error') %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if(session().hasFlash('success')) %}
+            <div class="alert alert-success">
+                {{ session().getFlash('success')[0] }}
+            </div>
+        {% endif %}
+        <form method="post" action="/register" >
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input name="name" value="Evgeniy Evge" placeholder="name" type="text" class="form-control" id="name">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input name="email" value="user@gmail.com" placeholder="email@email.com" type="email"  class="form-control" id="email">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input  name="password" value="123456789"  placeholder="name" type="password" class="form-control" id="password">
+            </div>
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Password confirmation</label>
+                <input name="password_confirmation" value="123456789" placeholder="name" type="password" class="form-control" id="password_confirmation">
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+{% endblock %}
