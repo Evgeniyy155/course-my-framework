@@ -1,6 +1,8 @@
 <?php
 
+use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
+use App\Controllers\LoginController;
 use App\Controllers\PostController;
 use App\Controllers\RegisterController;
 use Web\Framework\Routing\Route;
@@ -11,6 +13,9 @@ return [
     Route::get('/posts/create', [PostController::class, 'create']),
     Route::post('/posts', [PostController::class, 'store']),
     Route::get('/register', [RegisterController::class, 'form']),
-    Route::post('/register', [RegisterController::class, 'register'])
+    Route::post('/register', [RegisterController::class, 'register']),
+    Route::get('/login', [LoginController::class, 'form']),
+    Route::post('/login', [LoginController::class, 'login']),
+    Route::get('/dashboard', [DashboardController::class, 'index']),
 
 ];

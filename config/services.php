@@ -1,10 +1,13 @@
 <?php
 
+use App\Services\UserService;
 use Doctrine\DBAL\Connection;
 use League\Container\Container;
 use Symfony\Component\Dotenv\Dotenv;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Web\Framework\Authentication\SessionAuthentication;
+use Web\Framework\Authentication\SessionAuthInterface;
 use Web\Framework\Console\Application;
 use Web\Framework\Console\Commands\MigrateCommand;
 use Web\Framework\Controller\AbstractController;
@@ -99,4 +102,6 @@ $container->add(RouterDispatch::class)
         $container
     ]);
 
+$container->add(SessionAuthInterface::class, SessionAuthentication::class)
+    ->addArguments([UserService::class, SessionInterface::class]);
 return $container;

@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
-class User
+use Web\Framework\Authentication\AuthUserInterface;
+
+class User implements AuthUserInterface
 {
     public function __construct(
         private ?int $id,
@@ -18,7 +20,7 @@ class User
     {
         return new static($id, $name, $email, $password, $createdAt ?? new \DateTimeImmutable());
     }
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
