@@ -6,13 +6,15 @@ use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
+use Web\Framework\Authentication\SessionAuthInterface;
 use Web\Framework\Session\SessionInterface;
 
 class TwigFactory
 {
     public function __construct(
-        private string $viewsPath,
-        private SessionInterface $session
+        private readonly string $viewsPath,
+        private readonly SessionInterface $session,
+        private readonly SessionAuthInterface $auth,
     )
     {}
 
@@ -26,6 +28,7 @@ class TwigFactory
 
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
+        $twig->addFunction(new TwigFunction('auth', [$this, 'getAuth']));
 
         return  $twig;
     }
@@ -33,5 +36,10 @@ class TwigFactory
     public function getSession(): SessionInterface
     {
         return $this->session;
+    }
+
+    public function getAuth(): SessionAuthInterface
+    {
+        return $this->auth;
     }
 }

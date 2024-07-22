@@ -2,6 +2,7 @@
 
 namespace Web\Framework\Authentication;
 
+use Web\Framework\Session\Session;
 use Web\Framework\Session\SessionInterface;
 
 class SessionAuthentication implements SessionAuthInterface
@@ -30,17 +31,22 @@ class SessionAuthentication implements SessionAuthInterface
 
     public function login(AuthUserInterface $user): void
     {
-        $this->session->set('user_id', $user->getId());
+        $this->session->set(Session::AUTH_KEY, $user->getId());
         $this->user = $user;
     }
 
-    public function logout()
+    public function logout(): void
     {
-        // TODO: Implement logout() method.
+        $this->session->remove(Session::AUTH_KEY);
     }
 
     public function getUser(): AuthUserInterface
     {
         return $this->user;
+    }
+
+    public function check(): bool
+    {
+        return $this->session->has(Session::AUTH_KEY);
     }
 }

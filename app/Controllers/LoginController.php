@@ -11,7 +11,7 @@ class LoginController extends AbstractController
 {
 
     public function __construct(
-        private SessionAuthInterface $sessionAuth
+        private readonly SessionAuthInterface $auth
     )
     {
     }
@@ -23,7 +23,7 @@ class LoginController extends AbstractController
 
     public function login(): RedirectResponce
     {
-        $isAuth = $this->sessionAuth->authenticate(
+        $isAuth = $this->auth->authenticate(
             $this->request->input('email'),
             $this->request->input('password'),
         );
@@ -34,5 +34,11 @@ class LoginController extends AbstractController
         }
         $this->request->getSession()->setFlash('success', 'Login success');
         return new RedirectResponce('/dashboard');
+    }
+
+    public function logout(): Response
+    {
+        $this->auth->logout();
+        return new RedirectResponce('/login');
     }
 }

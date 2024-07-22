@@ -121,8 +121,14 @@
                 </li>
             </ul>
             <div class="d-flex gap-2">
-                <a class="btn btn-primary" href="/login">Вхід</a>
-                <a class="btn btn-outline-success" href="/register">Реєстрація</a>
+                {% if auth().check() %}
+                    <form action="/logout" method="post">
+                        <button class="btn btn-danger">Вихід</button>
+                    </form>
+                {% else %}
+                    <a class="btn btn-primary" href="/login">Вхід</a>
+                    <a class="btn btn-outline-success" href="/register">Реєстрація</a>
+                {% endif %}
             </div>
         </div>
     </div>

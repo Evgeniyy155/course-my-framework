@@ -13,6 +13,7 @@ use Web\Framework\Console\Commands\MigrateCommand;
 use Web\Framework\Controller\AbstractController;
 use Web\Framework\Dbal\ConnectionFactory;
 use Web\Framework\Http\Kernel;
+use Web\Framework\Http\Middleware\ExtractRouteInfo;
 use Web\Framework\Http\Middleware\RequestHandler;
 use Web\Framework\Http\Middleware\RequestHandlerInterface;
 use Web\Framework\Http\Middleware\RouterDispatch;
@@ -47,8 +48,6 @@ $container->add('framework-commands-namespace', new StringArgument('Web\\Framewo
 $container->add('APP_ENV', new StringArgument($appEnv));
 
 $container->add(RouterInterface::class, Router::class);
-$container->extend(RouterInterface::class)
-    ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 
 $container->add(RequestHandlerInterface::class, RequestHandler::class)
     ->addArgument($container);
@@ -69,7 +68,11 @@ $container->add(Kernel::class)
 $container->addShared(SessionInterface::class, Session::class);
 
 $container->add('twig-factory', TwigFactory::class)
-    ->addArguments([new StringArgument($viewsPath), SessionInterface::class]);
+    ->addArguments([
+        new StringArgument($viewsPath),
+        SessionInterface::class,
+        SessionAuthInterface::class
+    ]);
 
 $container->addShared('twig', function () use ($container) {
     return $container->get('twig-factory')->create();
@@ -104,4 +107,7 @@ $container->add(RouterDispatch::class)
 
 $container->add(SessionAuthInterface::class, SessionAuthentication::class)
     ->addArguments([UserService::class, SessionInterface::class]);
+
+$container->add(ExtractRouteInfo::class)
+    ->addArgument(new ArrayArgument($routes));
 return $container;
