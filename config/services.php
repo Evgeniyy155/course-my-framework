@@ -12,6 +12,7 @@ use Web\Framework\Console\Application;
 use Web\Framework\Console\Commands\MigrateCommand;
 use Web\Framework\Controller\AbstractController;
 use Web\Framework\Dbal\ConnectionFactory;
+use Web\Framework\Event\EventDispatcher;
 use Web\Framework\Http\Kernel;
 use Web\Framework\Http\Middleware\ExtractRouteInfo;
 use Web\Framework\Http\Middleware\RequestHandler;
@@ -52,11 +53,13 @@ $container->add(RouterInterface::class, Router::class);
 $container->add(RequestHandlerInterface::class, RequestHandler::class)
     ->addArgument($container);
 
+$container->addShared(EventDispatcher::class);
+
 $container->add(Kernel::class)
     ->addArguments([
-        RouterInterface::class,
         $container,
-        RequestHandlerInterface::class
+        RequestHandlerInterface::class,
+        EventDispatcher::class
     ]);
 
 //$container->addShared('twig-loader', FilesystemLoader::class)

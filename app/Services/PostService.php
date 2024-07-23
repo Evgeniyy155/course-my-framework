@@ -3,19 +3,20 @@
 namespace App\Services;
 
 use App\Entities\Post;
-use Doctrine\DBAL\Connection;
+use Web\Framework\Dbal\EntityService;
 use Web\Framework\Http\Exceptions\NotFoundException;
 
 class PostService
 {
-    public function __construct(private Connection $connection)
+    public function __construct(
+        private EntityService $service)
     {
 
     }
 
     public function save(Post $post): Post
     {
-        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder = $this->service->getConnection()->createQueryBuilder();
 
         $queryBuilder
             ->insert('posts')
@@ -29,14 +30,14 @@ class PostService
                 'body' => $post->getBody(),
                 'created_at' => $post->getCreatedAt()->format('Y-m-d H:i:s')
             ])->executeQuery();
-        $id = $this->connection->lastInsertId();
+        $id = $this->service->save($post);
         $post->setId($id);
         return $post;
     }
 
     public function find(int $id): ?Post
     {
-        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder = $this->service->getConnection()->createQueryBuilder();
         $result = $queryBuilder
             ->select('*')
             ->from('posts')

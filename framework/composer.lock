@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bf93082a790d71f201f3f7f8cbcabaa",
+    "content-hash": "5519fe96e13e239e26b43962f556258b",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -594,6 +594,59 @@
             "time": "2023-09-22T11:11:30+00:00"
         },
         {
+            "name": "psr/event-dispatcher",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/event-dispatcher.git",
+                "reference": "bbd9eacc080d33861e5b5c75b3b8c4d7e6d01874"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/bbd9eacc080d33861e5b5c75b3b8c4d7e6d01874",
+                "reference": "bbd9eacc080d33861e5b5c75b3b8c4d7e6d01874",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "suggest": {
+                "fig/event-dispatcher-util": "Provides some useful PSR-14 utilities"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\EventDispatcher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Standard interfaces for event handling.",
+            "keywords": [
+                "events",
+                "psr",
+                "psr-14"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/event-dispatcher"
+            },
+            "time": "2024-03-17T21:29:03+00:00"
+        },
+        {
             "name": "psr/log",
             "version": "dev-master",
             "source": {
@@ -1111,12 +1164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "1377f2da4efa020d2ad9b8fb8b722d688ab297ad"
+                "reference": "3401ddfc102e757e01f6efbb9592ea4453a7cb10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/1377f2da4efa020d2ad9b8fb8b722d688ab297ad",
-                "reference": "1377f2da4efa020d2ad9b8fb8b722d688ab297ad",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3401ddfc102e757e01f6efbb9592ea4453a7cb10",
+                "reference": "3401ddfc102e757e01f6efbb9592ea4453a7cb10",
                 "shasum": ""
             },
             "require": {
@@ -1184,7 +1237,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-14T11:59:09+00:00"
+            "time": "2024-07-22T12:39:41+00:00"
         }
     ],
     "packages-dev": [
@@ -1760,12 +1813,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6db691d5c459a806826d8c37f4c2a02ebdfa36ee"
+                "reference": "7af36fe694222657332a5f932f29dae99964cedc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6db691d5c459a806826d8c37f4c2a02ebdfa36ee",
-                "reference": "6db691d5c459a806826d8c37f4c2a02ebdfa36ee",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7af36fe694222657332a5f932f29dae99964cedc",
+                "reference": "7af36fe694222657332a5f932f29dae99964cedc",
                 "shasum": ""
             },
             "require": {
@@ -1853,7 +1906,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-17T06:06:37+00:00"
+            "time": "2024-07-23T06:29:20+00:00"
         },
         {
             "name": "sebastian/cli-parser",

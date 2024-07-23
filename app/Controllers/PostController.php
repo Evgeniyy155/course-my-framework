@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Entities\Post;
 use App\Services\PostService;
 use Web\Framework\Controller\AbstractController;
-use Web\Framework\Http\RedirectResponce;
+use Web\Framework\Http\RedirectResponse;
 use Web\Framework\Http\Response;
 use Web\Framework\Session\SessionInterface;
 
@@ -39,6 +39,6 @@ class PostController extends AbstractController
 
         $post = $this->service->save($post);
         $this->request->getSession()->setFlash('success', 'Пост був успішно створений!');
-        return new RedirectResponce("/posts/{$post->getId()}");
+        return new RedirectResponse("/posts/{$post->getId()}");
     }
 }

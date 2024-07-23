@@ -4,7 +4,7 @@ namespace Web\Framework\Http;
 
 use Web\Framework\Http\Response;
 
-class RedirectResponce extends Response
+class RedirectResponse extends Response
 {
     public function __construct(string $url)
     {

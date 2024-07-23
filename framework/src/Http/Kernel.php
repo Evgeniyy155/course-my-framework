@@ -4,6 +4,8 @@ namespace Web\Framework\Http;
 
 use Doctrine\DBAL\Connection;
 use League\Container\Container;
+use Web\Framework\Event\EventDispatcher;
+use Web\Framework\Http\Events\ResponseEvent;
 use Web\Framework\Http\Exceptions\HttpException;
 use Web\Framework\Http\Middleware\RequestHandlerInterface;
 use Web\Framework\Routing\RouterInterface;
@@ -14,9 +16,9 @@ class Kernel
     private string $appEnv = 'local';
 
     public function __construct(
-        private RouterInterface $router,
-        private Container $container,
+        private readonly Container $container,
         private RequestHandlerInterface $requestHandler,
+        private readonly EventDispatcher $eventDispatcher,
     )
     {
         $this->appEnv = $this->container->get('APP_ENV');
@@ -24,20 +26,22 @@ class Kernel
     public function handle(Request $request): Response
     {
         try {
-            $responce = $this->requestHandler->handle($request);
+            $response = $this->requestHandler->handle($request);
 
         } catch (\Exception $e){
-            $responce = $this->createExceptionResponce($e);
+            $response = $this->createExceptionResponse($e);
         }
 
-        return $responce;
+        $this->eventDispatcher->dispatch(new ResponseEvent($request, $response));
+
+        return $response;
     }
     public function terminate(Request $request, Response $response): void
     {
         $request->getSession()?->clearFlash();
     }
 
-    private function createExceptionResponce(\Exception $e): Response
+    private function createExceptionResponse(\Exception $e): Response
     {
         if(in_array($this->appEnv, ['local', 'testing'])){
             throw $e;

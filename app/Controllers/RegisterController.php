@@ -6,7 +6,7 @@ use App\Forms\User\RegisterForm;
 use App\Services\UserService;
 use Web\Framework\Authentication\SessionAuthInterface;
 use Web\Framework\Controller\AbstractController;
-use Web\Framework\Http\RedirectResponce;
+use Web\Framework\Http\RedirectResponse;
 use Web\Framework\Http\Response;
 
 class RegisterController extends AbstractController
@@ -39,7 +39,7 @@ class RegisterController extends AbstractController
             foreach ($form->getValidationErrors() as $error){
                 $this->request->getSession()->setFlash('error', $error);
             }
-            return new RedirectResponce('/register');
+            return new RedirectResponse('/register');
         }
         // 3. Зареєструвати користувача визвав $form->save()
         $user = $form->save();
@@ -48,6 +48,6 @@ class RegisterController extends AbstractController
         // 5. Війти в систему під користувачем
         $this->auth->login($user);
         // 6. Перенаправити на потрібну сторніку
-        return new RedirectResponce('/register');
+        return new RedirectResponse('/register');
     }
 }

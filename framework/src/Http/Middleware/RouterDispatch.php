@@ -20,7 +20,7 @@ class RouterDispatch implements MiddlewareInterface
     public function process(Request $request, RequestHandlerInterface $handler): Response
     {
         [$routeHandler, $vars] = $this->router->dispatch($request, $this->container);
-        $responce = call_user_func_array($routeHandler, $vars);
-        return $responce;
+        $response = call_user_func_array($routeHandler, $vars);
+        return $response;
     }
 }

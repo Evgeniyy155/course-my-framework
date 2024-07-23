@@ -4,7 +4,7 @@ namespace Web\Framework\Http\Middleware;
 
 use Web\Framework\Authentication\SessionAuthInterface;
 use Web\Framework\Http\Middleware\MiddlewareInterface;
-use Web\Framework\Http\RedirectResponce;
+use Web\Framework\Http\RedirectResponse;
 use Web\Framework\Http\Request;
 use Web\Framework\Http\Response;
 use Web\Framework\Session\SessionInterface;
@@ -23,7 +23,7 @@ class Authenticate implements MiddlewareInterface
         $this->session->start();
         if(!$this->auth->check()){
             $this->session->setFlash('error', 'To get started, you need to sign in to your account.');
-            return new RedirectResponce('/login');
+            return new RedirectResponse('/login');
         }
         return  $handler->handle($request);
     }

@@ -33,9 +33,9 @@ class RequestHandler implements RequestHandlerInterface
         // Створити новий екземпляр визову процесу middleware на ньому
 
         $middleware = $this->container->get($middlewareClass);
-        $responce = $middleware->process($request, $this);
+        $response = $middleware->process($request, $this);
 
-        return $responce;
+        return $response;
     }
 
     public function injectMiddleware(array $middleware): void
